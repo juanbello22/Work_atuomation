@@ -1,0 +1,2 @@
+palabra = 'mañana'
+print(palabra)
