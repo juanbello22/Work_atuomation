@@ -1,14 +1,13 @@
 import time
+import getpass
 import selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 
 def check_exists(option , id):
@@ -18,11 +17,18 @@ def check_exists(option , id):
         return False
     return True
 
+def login(username, password):
+    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'login_username'))).send_keys(username)
+    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'login_password'))).send_keys(password)
+    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'button_login'))).click()
+
 def open_id_tickets():
     WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'sidebar_requests'))).click()
-    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//span[normalize-space()='Globant - GIST Identity Validation']"))).click()
-    #if check_exists(By.ID,'scroll_button'):
-    #    driver.find_element(By.ID, 'scroll_button').click()
+    if check_exists(By.XPATH, "//span[normalize-space()='Globant - GIST Identity Validation']"):
+        WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//span[normalize-space()='Globant - GIST Identity Validation']"))).click()
+    else: 
+        print("Todos los tickets de ID validation fueron cerrados")
+        exit()
 
 def charge_and_close():
     WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT,'@globant.com'))).click()
@@ -46,19 +52,17 @@ def charge_and_close():
     WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'submit-button'))).click()
 
 #initializing variables
-options = webdriver.ChromeOptions() 
-options.arguments.append('--profile-directory=Profile 1')
-options.arguments.append(r"--user-data-dir=C:\Users\Juan\AppData\Local\Google\Chrome\User Data")
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+username = input("Invgate user: ")
+password = getpass.getpass()
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 mails = []
 
 #open invgate 
 driver.get("https://globant.cloud.invgate.net/")
-WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'button_login'))).click()
+login(username, password)
 open_id_tickets()
 
-#do the same with the rest of the tickets
-while True: #timeout exception?
+while True:
     time.sleep(1)
     html = driver.find_element(By.TAG_NAME, 'html')
     html.send_keys(Keys.PAGE_UP)

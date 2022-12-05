@@ -1,2 +1,0 @@
-palabra = 'mañana'
-print(palabra)
