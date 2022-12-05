@@ -68,26 +68,10 @@ options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 mails = []
-mails2 = ["Luis Emilio Murillo Labourdette",
-"Jose De Jesus Andrade Santiago",
-"Nicolas Carello Laje",
-"Ignacio Alberto Mendez",
-"Sebastian Rendon Arboleda",
-"Manuela Ochoa Munoz",
-"Andres Felipe Tibavija Diaz",
-"Emanuele Araujo Solagna",
-"Amol Mohite",
-"Javier Ignacio Fernandez Faundez",
-"Alejandra Chavarro Larrota",
-"Mayra Asuncion Aguilar Carmona",
-"Santiago Merchán",
-"Jomar Restrepo Restrepo",
-"Mario Herrera",
-"Federico Moragues",
-"Christian Esquivel",
-"Juan Manuel Aleman",
-"Zulima Zafra Rojas",
-"Samuel Felipe Herrera Sevilla"]
+mails2 = ["Nicolas Carello Laje", "Ignacio Alberto Mendez", "Sebastian Rendon Arboleda", 
+"Manuela Ochoa Munoz", "Andres Felipe Tibavija Diaz", "Emanuele Araujo Solagna", "Amol Mohite", "Javier Ignacio Fernandez Faundez", 
+"Alejandra Chavarro Larrota", "Mayra Asuncion Aguilar Carmona", "Santiago Merchán", "Jomar Restrepo Restrepo", "Mario Herrera", 
+"Federico Moragues", "Christian Esquivel", "Juan Manuel Aleman", "Zulima Zafra Rojas","Samuel Felipe Herrera Sevilla"]
 #open invgate and get mails 
 driver.get("https://globant.cloud.invgate.net/")
 login()
@@ -111,10 +95,15 @@ login_admin()
 driver.get("https://admin.google.com/ac/devices/list?status=6&category=all")
 
 for mail in mails2:
-    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//input[@aria-label='Search by keyword or serial number']"))).send_keys(mails2)
+    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//input[@aria-label='Search by keyword or serial number']"))).send_keys(Keys.DELETE)
+    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//input[@aria-label='Search by keyword or serial number']"))).send_keys(mail)
     WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//input[@aria-label='Search by keyword or serial number']"))).send_keys(Keys.ENTER)
-    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//div[@aria-label='Select all rows']"))).click()
+    try:
+        WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//div[@aria-label='Select all rows']"))).click()
+    except:
+        continue
     WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//div[@id='ow30']"))).click()
     WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//div[contains(text(),'Delete Devices')]"))).click()
     WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(),'Delete')]"))).click()
+
 time.sleep(5)
