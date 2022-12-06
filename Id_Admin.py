@@ -17,8 +17,8 @@ def check_exists(option , id):
     return True
 
 def login():
-    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'login_username'))).send_keys('j.bello')
-    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'login_password'))).send_keys('Cod3988b!')
+    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'login_username'))).send_keys('')
+    WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'login_password'))).send_keys('')
     WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'button_login'))).click()
 
 def login_admin():
