@@ -28,6 +28,7 @@ def open_id_tickets():
         WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//span[normalize-space()='Globant - GIST Identity Validation']"))).click()
     else: 
         print("Todos los tickets de ID validation fueron cerrados")
+        #sys.exit()
         exit()
 
 def charge_and_close():
@@ -52,16 +53,18 @@ def charge_and_close():
     WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, 'submit-button'))).click()
 
 #initializing variables
+#convención, variables globales empiezan en mayúscula
 username = input("Invgate user: ")
 password = getpass.getpass()
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-mails = []
+#mails = []
 
 #open invgate 
 driver.get("https://globant.cloud.invgate.net/")
 login(username, password)
 open_id_tickets()
 
+#try with for loop(?)
 while True:
     time.sleep(1)
     html = driver.find_element(By.TAG_NAME, 'html')
@@ -69,3 +72,9 @@ while True:
     charge_and_close()
     time.sleep(1)
     open_id_tickets()
+
+#virtual enviroments
+#entry point
+#contenedores
+#requirements.txt
+#push to git.globant 
