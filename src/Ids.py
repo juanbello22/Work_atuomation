@@ -84,13 +84,11 @@ def close_admin():
 
 #initializing variables
 Invg_user = config('INVG_USER')
-print(config('INVG_USER'))
 Invg_pass = config('INVG_PASS')
 Admin_user = config('ADMIN_USER')
 Admin_pass = config('ADMIN_PASS')
 Driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 Mails = []
-Tickets_num = 0
 
 #open invgate and get mails 
 Driver.get("https://globant.cloud.invgate.net/")
@@ -100,7 +98,6 @@ html = Driver.find_element(By.TAG_NAME, 'html')
 html.send_keys(Keys.PAGE_DOWN)
 time.sleep(1)
 html.send_keys(Keys.PAGE_UP)
-
 raw_tickets = WebDriverWait(Driver, 5).until(EC.visibility_of_all_elements_located((By.PARTIAL_LINK_TEXT,'@globant.com')))
 
 for mail in raw_tickets:
@@ -108,7 +105,6 @@ for mail in raw_tickets:
 print(Mails)
 
 for mail in Mails:
-    #html.send_keys(Keys.PAGE_UP)
     charge_and_close(mail)
     time.sleep(1)
     open_id_tickets()
@@ -120,5 +116,4 @@ Driver.switch_to.window("secondtab")
 Driver.get('https://admin.google.com/')
 login_admin(Admin_user, Admin_pass)
 Driver.get("https://admin.google.com/ac/devices/list?status=6&category=all")
-
 close_admin()
