@@ -167,4 +167,5 @@ for mail in MAILS:
     INVGATE.open_tkts()
 
 ADMIN.switch()
+DRIVER.get("https://admin.google.com/ac/devices/list?status=6&category=all")
 ADMIN.close()
